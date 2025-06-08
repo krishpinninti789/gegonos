@@ -3,13 +3,13 @@ import Header from "@/components/shared/Header";
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <div>
+    <div className="flex h-screen m-2 flex-col">
       <Header />
-      <body>{children}</body>
+      <main className="flex-1">{children}</main>
       <Footer />
     </div>
   );

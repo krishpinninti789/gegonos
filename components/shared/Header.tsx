@@ -10,23 +10,21 @@ const Header = () => {
     <header className="w-full border-b">
       <div className="wrapper flex items-center justify-between">
         <Link href="/" className="w-36">
-          <Image
-            src="/assets/images/logo.svg"
-            width={128}
-            height={38}
-            alt="Evently logo"
-          />
+          <div className="flex">
+            <h1 className="font-bold text-2xl text-orange-500">G</h1>
+            <h2 className="font-bold text-2xl">Gegonos</h2>
+          </div>
         </Link>
 
         <SignedIn>
-          <nav className="md:flex-between hidden w-full max-w-xs">
+          <nav className="hidden lg:block md:flex-between w-full max-w-xs">
             <NavItems />
           </nav>
         </SignedIn>
 
         <div className="flex w-32 justify-end gap-3">
           <SignedIn>
-            <UserButton afterSignOutUrl="/" />
+            <UserButton afterSwitchSessionUrl="/" />
             <MobileNav />
           </SignedIn>
           <SignedOut>

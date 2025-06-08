@@ -1,11 +1,7 @@
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="flex justify-center items-center h-screen">
-      <div>{children}</div>
-    </div>
+    <div className="flex justify-center items-center h-screen">{children}</div>
   );
-}
+};
+
+export default Layout;
