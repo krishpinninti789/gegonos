@@ -4,8 +4,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div>
-      <body>{children}</body>
+    <div className="flex justify-center items-center h-screen">
+      <div>{children}</div>
     </div>
   );
 }
