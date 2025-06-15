@@ -2,6 +2,7 @@ import { verifyWebhook } from "@clerk/nextjs/webhooks";
 import { NextRequest, NextResponse } from "next/server";
 
 import { createUser } from "@/lib/actions/user.actions";
+import { clerkClient } from "@clerk/nextjs/server";
 
 export async function POST(req: NextRequest) {
   try {
@@ -11,7 +12,7 @@ export async function POST(req: NextRequest) {
     // For this guide, log payload to console
     const { id } = evt.data;
     const eventType = evt.type;
-    console.log(eventType);
+    // console.log(eventType);
 
     if (evt.type === "user.created") {
       console.log("userId:", evt.data.id);
@@ -27,7 +28,7 @@ export async function POST(req: NextRequest) {
         username,
       } = evt.data;
 
-      console.log(evt.data);
+      // console.log(evt.data);
 
       const user = {
         clerkId: id,
@@ -39,6 +40,18 @@ export async function POST(req: NextRequest) {
       };
 
       const newUser = await createUser(user);
+
+      // console.log(newUser);
+
+      if (newUser) {
+        const client = await clerkClient();
+
+        await client.users.updateUserMetadata(id, {
+          publicMetadata: {
+            userId: newUser._id,
+          },
+        });
+      }
 
       return NextResponse.json({ message: "OK", user: newUser });
     }

@@ -104,32 +104,32 @@ export type CreateCategoryParams = {
 };
 
 // ====== ORDER PARAMS
-export type CheckoutOrderParams = {
-  eventTitle: string;
-  eventId: string;
-  price: string;
-  isFree: boolean;
-  buyerId: string;
-};
+// export type CheckoutOrderParams = {
+//   eventTitle: string;
+//   eventId: string;
+//   price: string;
+//   isFree: boolean;
+//   buyerId: string;
+// };
 
-export type CreateOrderParams = {
-  stripeId: string;
-  eventId: string;
-  buyerId: string;
-  totalAmount: string;
-  createdAt: Date;
-};
+// export type CreateOrderParams = {
+//   stripeId: string;
+//   eventId: string;
+//   buyerId: string;
+//   totalAmount: string;
+//   createdAt: Date;
+// };
 
-export type GetOrdersByEventParams = {
-  eventId: string;
-  searchString: string;
-};
+// export type GetOrdersByEventParams = {
+//   eventId: string;
+//   searchString: string;
+// };
 
-export type GetOrdersByUserParams = {
-  userId: string | null;
-  limit?: number;
-  page: string | number | null;
-};
+// export type GetOrdersByUserParams = {
+//   userId: string | null;
+//   limit?: number;
+//   page: string | number | null;
+// };
 
 // ====== URL QUERY PARAMS
 export type UrlQueryParams = {
@@ -144,6 +144,97 @@ export type RemoveUrlQueryParams = {
 };
 
 export type SearchParamProps = {
-  params: { id: string };
-  searchParams: { [key: string]: string | string[] | undefined };
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{
+    [key: string]: string | string[] | undefined | number;
+  }>;
 };
+
+//OREDER PARAMS
+
+// Add these new types to your existing types file
+
+// Existing types (keep as is)
+export type CheckoutOrderParams = {
+  eventTitle: string;
+  eventId: string;
+  price: string;
+  isFree: boolean;
+  buyerId: string;
+};
+
+export type CreateOrderParams = {
+  stripeId?: string; // Keep for backward compatibility
+  razorpayOrderId?: string;
+  razorpayPaymentId?: string;
+  eventId: string;
+  buyerId: string;
+  totalAmount: string;
+  status?: "pending" | "completed" | "failed" | "refunded";
+  createdAt?: Date;
+};
+
+export type GetOrdersByEventParams = {
+  eventId: string;
+  searchString: string;
+};
+
+export type GetOrdersByUserParams = {
+  userId: string;
+  limit?: number;
+  page: number;
+};
+
+// New Razorpay-specific types
+export type VerifyPaymentParams = {
+  orderId: string; // Razorpay order ID
+  paymentId: string; // Razorpay payment ID
+  signature: string; // Razorpay signature
+  dbOrderId: string; // Your database order ID
+};
+
+export type RazorpayOrderResponse = {
+  orderId: string;
+  amount: number;
+  currency: string;
+  key: string;
+  dbOrderId: string;
+};
+
+export type PaymentVerificationResponse = {
+  success: boolean;
+  message: string;
+  order?: any;
+};
+
+export type RazorpayPaymentData = {
+  amount: number;
+  currency: string;
+  name: string;
+  description: string;
+  order_id: string;
+  prefill: {
+    name: string;
+    email: string;
+    contact: string;
+  };
+  theme: {
+    color: string;
+  };
+};
+
+// Updated Order model interface
+export interface IOrder {
+  _id: string;
+  stripeId?: string; // Keep for backward compatibility
+  razorpayOrderId?: string;
+  razorpayPaymentId?: string;
+  refundId?: string;
+  refundAmount?: number;
+  totalAmount: string;
+  event: string;
+  buyer: string;
+  status: "pending" | "completed" | "failed" | "refunded";
+  createdAt: Date;
+  updatedAt?: Date;
+}

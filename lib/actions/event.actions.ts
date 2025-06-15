@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 
+import connectToDB from "@/lib/database";
 import Event from "@/lib/database/models/event.model";
 import User from "@/lib/database/models/user.model";
 import Category from "@/lib/database/models/category.model";
@@ -15,7 +16,6 @@ import {
   GetEventsByUserParams,
   GetRelatedEventsByCategoryParams,
 } from "@/types";
-import connectToDB from "../database";
 
 const getCategoryByName = async (name: string) => {
   return Category.findOne({ name: { $regex: name, $options: "i" } });
@@ -36,17 +36,15 @@ export async function createEvent({ userId, event, path }: CreateEventParams) {
   try {
     await connectToDB();
 
-    console.log(userId, event, path);
+    // console.log(userId);
 
-    const dbUser = await User.findOne({ clerkId: userId });
-
-    const organizer = await User.findById(dbUser._id);
+    const organizer = await User.findById(userId);
     if (!organizer) throw new Error("Organizer not found");
 
     const newEvent = await Event.create({
       ...event,
       category: event.categoryId,
-      organizer: dbUser._id,
+      organizer: userId,
     });
     revalidatePath(path);
 

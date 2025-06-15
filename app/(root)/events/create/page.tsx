@@ -2,12 +2,9 @@ import EventForm from "@/components/shared/EventForm";
 import { auth } from "@clerk/nextjs/server";
 
 const CreateEvent = async () => {
-  const { userId, redirectToSignIn } = await auth();
-  if (!userId) {
-    return redirectToSignIn();
-  }
+  const { sessionClaims } = await auth();
 
-  const usersId = userId as string;
+  const userId = sessionClaims?.userId as string;
 
   return (
     <>
@@ -18,7 +15,7 @@ const CreateEvent = async () => {
       </section>
 
       <div className="wrapper my-8">
-        <EventForm userId={usersId} type="Create" />
+        <EventForm userId={userId} type="Create" />
       </div>
     </>
   );
