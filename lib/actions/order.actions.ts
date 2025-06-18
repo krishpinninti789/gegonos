@@ -57,7 +57,7 @@ export const createRazorpayOrder = async (order: CheckoutOrderParams) => {
         amount: 0,
         currency: "INR",
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-        dbOrderId: freeOrder._id,
+        dbOrderId: freeOrder._id.toString(),
         isFree: true,
       };
     }

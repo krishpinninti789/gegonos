@@ -32,7 +32,7 @@ export default async function Home({ searchParams }: SearchParamProps) {
               Book and learn helpful tips from 3,168+ mentors in world-class
               companies with our global community.
             </p>
-            <Button size="lg" asChild className="button w-full sm:w-fit">
+            <Button size="lg" asChild className="button w-full sm:w-fit ">
               <Link href="#events">Explore Now</Link>
             </Button>
           </div>
